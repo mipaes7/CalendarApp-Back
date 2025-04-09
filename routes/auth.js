@@ -4,13 +4,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/new', (req, res) => {
-    console.log('route')
-    res.json({
-        ok: true,
-        msg: 'register'
-    });
-});
+const { createUser } = require('../controllers/auth');
+
+router.post('/new', createUser);
 
 router.post('/', (req, res) => {
     console.log('route')
