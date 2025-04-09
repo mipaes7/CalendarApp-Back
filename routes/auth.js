@@ -2,27 +2,23 @@
 //* host + /api/auth
 
 const express = require('express');
+const { check } = require('express-validator');
 const router = express.Router();
 
-const { createUser } = require('../controllers/auth');
+const { createUser, renewToken, loginUser } = require('../controllers/auth');
 
-router.post('/new', createUser);
+router.post(
+    '/new',
+    [ // middlewares
+        check('name', 'Name is mandatory').not().isEmpty(),
+        check('email', 'Email is mandatory').isEmail(),
+        check('password', 'Password must be have at least 6 chars').isLength({min: 6}),
+    ], 
+    createUser
+);
 
-router.post('/', (req, res) => {
-    console.log('route')
-    res.json({
-        ok: true,
-        msg: 'login'
-    });
-});
+router.post('/', loginUser);
 
-router.get('/renew', (req, res) => {
-    console.log('route')
-    res.json({
-        ok: true,
-        msg: 'token renew'
-
-    });
-});
+router.get('/renew', renewToken);
 
 module.exports = router;
