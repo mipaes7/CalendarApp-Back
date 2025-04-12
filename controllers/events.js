@@ -7,7 +7,6 @@ const getEvents = async(req, res = response) => {
 
         let events = await Event.find()
                                 .populate('user', 'name');
-        console.log(events);
 
         res.status(200).json(
             {
@@ -82,9 +81,9 @@ const updateEvent = async(req, res) => {
                 }
             )
         }
-
-        if (eventToUpdate.user.toString() != uid) {
-            res.status(401).jeson(
+        console.log(eventToUpdate.user);
+        if (eventToUpdate.user.toString() !== uid) {
+            res.status(401).json(
                 {
                     ok: false,
                     msg: 'User unauthorized to perform this action'
@@ -125,13 +124,13 @@ const deleteEvent = async(req, res) => {
 
     try {
         
-        const eventToDelete = await Event.findByIdAndDelete(eventId);
+        const eventToDelete = await Event.findById(eventId);
 
         if (!eventToDelete) {
             res.status(404).json(
                 {
                     ok: false,
-                    msg: 'Event not found'
+                    msg: 'Event not found!'
                 }
             )
         }
@@ -145,6 +144,8 @@ const deleteEvent = async(req, res) => {
                 }
             )
         }
+
+        await Event.findByIdAndDelete(eventId);
 
         res.status(200).json(
             {

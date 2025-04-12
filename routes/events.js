@@ -16,8 +16,8 @@ router.post(
     '/',
     [
         check('title', 'Title is mandatory').not().isEmpty(),
-        check('start', 'Start Date is mandatory and must be a valid date').isDate(),
-        check('end', 'End Date is mandatory and must be a valid date').isDate(),
+        check('start', 'Start Date is mandatory and must be a valid date').isISO8601(),
+        check('end', 'End Date is mandatory and must be a valid date').isISO8601(),
         validateFields
     ],
     createEvent
